@@ -1,0 +1,18 @@
+/** @format */
+
+.paymentMethod {
+  border: 1px solid #e4eaf5;
+  border-radius: 3px;
+  margin: 10px;
+
+}
+
+
+.paymentMethod:hover{
+  border-color: #008ce6;
+  cursor: pointer;
+}
+
+.active{
+    border: 1px solid #008ce6;
+}
