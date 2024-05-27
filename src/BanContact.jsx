@@ -9,14 +9,11 @@ const PayPalBanContactPaymentFields = () => {
   useEffect(() => {
     if (!window.paypal || isPending) return;
 
-    window.paypal
+    const paymentFields = window.paypal
       .PaymentFields({
         fundingSource: window.paypal.FUNDING.BANCONTACT,
-        /* style object (optional) */
         style: {
-          /* customize field attributes (optional) */
           variables: {},
-          /* set custom rules to apply to fields classes (optional) */
           rules: {},
         },
         onInit: (data, actions) => {
@@ -31,21 +28,22 @@ const PayPalBanContactPaymentFields = () => {
 
               actions.validate().then((valid) => {
                 if (valid) {
-                  window.location.href = `/second-page.html?payment-option=${window.paypal.FUNDING.BANCONTACT}`;
+                  console.log("valid----", { valid, paymentSource });
+                  // window.location.href = `/second-page.html?payment-option=${window.paypal.FUNDING.BANCONTACT}`;
                 }
               });
             }
           });
         },
         fields: {
-          /* fields prefill info (optional) */
           name: {
             value: "John Doe",
           },
         },
+        onClose: () => {},
       })
       .renderTo(window, "#bancontact-container");
-  }, []);
+  }, [isPending]);
 
   return <div id='bancontact-container' />;
 };

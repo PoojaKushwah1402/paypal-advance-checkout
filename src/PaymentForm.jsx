@@ -4,12 +4,13 @@
  * @format
  */
 
-import React from "react";
+import React, { lazy } from "react";
 import {
   usePayPalScriptReducer,
   PayPalMarks,
   PayPalCardFieldsProvider,
   PayPalCardFieldsForm,
+  PayPalButtons,
 } from "@paypal/react-paypal-js";
 import "./style.css";
 import PayPalIDealPaymentFields from "./PayPalIDealPaymentFields";
@@ -25,7 +26,7 @@ function onApprove(data) {
 const PaymentForm = ({ showSpinner }) => {
   const [{ isPending }] = usePayPalScriptReducer();
 
-  const [selectedMethod, setSelectedMethod] = React.useState("");
+  const [selectedMethod, setSelectedMethod] = React.useState("paypal");
 
   const setPaymentMethod = (method) => setSelectedMethod(method);
 
@@ -39,22 +40,18 @@ const PaymentForm = ({ showSpinner }) => {
           display: "flex",
           flexDirection: "column",
           gap: "10px",
+          textAlign: "center",
         }}>
         <form className='paypal-payment-form'>
+          <input type='hidden' name='payment-option' value={selectedMethod} />
+
           <div
             onClick={() => setPaymentMethod("ideal")}
             className={`paymentMethod ${
               selectedMethod === "ideal" ? " active" : ""
             }`}>
             <PayPalMarks fundingSource='ideal' />
-            {selectedMethod === "ideal" ? (
-              <form className='paypal-payment-form'>
-                <PayPalIDealPaymentFields />
-                <button type='submit'>Submit</button>
-              </form>
-            ) : (
-              ""
-            )}
+            {selectedMethod === "ideal" ? <PayPalIDealPaymentFields /> : ""}
           </div>
           <div
             onClick={() => setPaymentMethod("paypal")}
@@ -75,6 +72,7 @@ const PaymentForm = ({ showSpinner }) => {
               ""
             )}
           </div>
+
           <div className='paymentMethod '>
             <PayPalCardFieldsProvider
               createOrder={createOrder}
@@ -85,6 +83,10 @@ const PaymentForm = ({ showSpinner }) => {
               <PayPalCardFieldsForm />
             </PayPalCardFieldsProvider>
           </div>
+
+          <button className='pay-btn' type='submit'>
+            Pay
+          </button>
         </form>
       </div>
     </>

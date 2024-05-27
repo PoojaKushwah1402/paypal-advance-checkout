@@ -7,43 +7,35 @@ const PayPalIDealPaymentFields = () => {
   const [{ isPending }] = usePayPalScriptReducer();
 
   useEffect(() => {
-    if (!window.paypal || isPending) return;
+    if (!window.paypal) return;
 
-    const paymentFields = window.paypal.PaymentFields({
-      fundingSource: window.paypal.FUNDING.IDEAL,
-      onInit: (data, actions) => {
-        const form = document.querySelector("form.paypal-payment-form");
+    const paymentFields = window.paypal
+      .PaymentFields({
+        fundingSource: window.paypal.FUNDING.IDEAL,
+        onInit: (data, actions) => {
+          const form = document.querySelector("form.paypal-payment-form");
 
-        form.addEventListener("submit", (e) => {
-          const formData = new FormData(form);
-          const paymentSource = formData.get("payment-option");
-          console.log("actions", { actions });
-          if (paymentSource === window.paypal.FUNDING.IDEAL) {
-            e.preventDefault();
+          form.addEventListener("submit", (e) => {
+            const formData = new FormData(form);
+            const paymentSource = formData.get("payment-option");
 
-            actions.validate().then((valid) => {
-              if (valid) {
-                window.location.href = `/second-page.html?payment-option=${window.paypal.FUNDING.IDEAL}`;
-              }
-            });
-          }
-        });
-      },
-      fields: {
-        name: {
-          value: "John Doe",
+            if (paymentSource === window.paypal.FUNDING.IDEAL) {
+              e.preventDefault();
+
+              actions.validate().then((valid) => {
+                if (valid) {
+                  console.log("valid----", { valid, paymentSource });
+                  // window.location.href = `/second-page.html?payment-option=${window.paypal.FUNDING.IDEAL}`;
+                }
+              });
+            }
+          });
         },
-      },
-      onclose: () => paymentFields.close(),
-    });
-
-    paymentFields.renderTo(window, "#ideal-container");
-
-    return () => {
-      paymentFields.close();
-    };
+        fields: {},
+        onClose: () => {},
+      })
+      .renderTo(window, "#ideal-container");
   }, [isPending]);
-
   return <div id='ideal-container' />;
 };
 

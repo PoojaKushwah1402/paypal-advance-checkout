@@ -16,3 +16,13 @@
 .active{
     border: 1px solid #008ce6;
 }
+
+.pay-btn{
+  width: 95%;
+  padding: 10px;
+  background-color: #008ce6;
+  border: none;
+  color: white;
+  cursor: pointer;
+  height: 40px;
+}
