@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState } from "react";
+import "./style.css";
 
 import { usePayPalCardFields } from "@paypal/react-paypal-js";
 
@@ -32,7 +33,7 @@ export const SubmitPayment = ({ isPaying, setIsPaying }) => {
       className={isPaying ? "pay-btn" : "pay-btn btn-primary"}
       style={{ float: "right" }}
       onClick={handleClick}>
-      {isPaying ? <div className='spinner tiny' /> : "Pay"}
+      {isPaying ? <div className='spinner' /> : "Pay"}
     </button>
   );
 };

@@ -26,3 +26,29 @@
   cursor: pointer;
   height: 40px;
 }
+
+.paypal-payment-form{
+  /* border: 1px solid red; */
+  text-align: center;
+}
+
+.spinner {
+  border: 1px solid #f3f3f3;
+  border-top: 1px solid #370ad6;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  animation: spin 2s linear infinite;
+  margin-left: 200px;
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
