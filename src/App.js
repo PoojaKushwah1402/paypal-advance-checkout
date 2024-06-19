@@ -9,7 +9,8 @@ import PaymentForm from "./PaymentForm";
 function App() {
   const initialOptions = {
     clientId:
-      "AduyjUJ0A7urUcWtGCTjanhRBSzOSn9_GKUzxWDnf51YaV1eZNA0ZAFhebIV_Eq-daemeI7dH05KjLWm",
+      // "AduyjUJ0A7urUcWtGCTjanhRBSzOSn9_GKUzxWDnf51YaV1eZNA0ZAFhebIV_Eq-daemeI7dH05KjLWm",
+      "AdjMKxACEf4wrl11DNB0c3nmvJQ5tCcRa4gjT1xm9zb5WoGIpeATK0UjQNnCBN_IR9lHsw94D7AxdRTl",
     enableFunding: "paylater,venmo,ideal,bancontact",
     components: "card-fields,buttons,payment-fields,funding-eligibility,marks",
     currency: "EUR",

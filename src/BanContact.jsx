@@ -35,11 +35,7 @@ const PayPalBanContactPaymentFields = () => {
             }
           });
         },
-        fields: {
-          name: {
-            value: "John Doe",
-          },
-        },
+
         onClose: () => {},
       })
       .renderTo(window, "#bancontact-container");

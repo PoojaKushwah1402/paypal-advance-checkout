@@ -15,16 +15,61 @@ import {
 import "./style.css";
 import PayPalIDealPaymentFields from "./PayPalIDealPaymentFields";
 import PayPalBanContactPaymentFields from "./BanContact";
+import CardField from "./CardField";
+import { SubmitPayment } from "./Submit";
+const serverURL = "http://localhost:4001";
 
-function createOrder(data) {
-  console.log("createOrder", { data });
+async function createOrder(data) {
+  console.log("***************************------*********8server", { data });
+  return fetch(`${serverURL}/api/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // Use the "body" parameter to optionally pass additional order information
+    body: JSON.stringify({
+      cart: [
+        {
+          sku: "1blwyeo8",
+          quantity: 2,
+        },
+      ],
+      card: {
+        attributes: {
+          verification: {
+            method: "SCA_ALWAYS",
+          },
+        },
+      },
+      paymentSource: data.paymentSource,
+    }),
+  })
+    .then((response) => response.json())
+    .then((order) => {
+      console.log("order", { order });
+      return order.id;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
+
 function onApprove(data) {
-  console.log("onApprove", { data });
+  console.log("onApprove*****-----------------------------", data);
+  return fetch(`${serverURL}/api/orders/${data.orderID}/capture`, {
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((orderData) => {
+      console.log("orderData success", { orderData });
+      // Successful capture!
+    })
+    .catch((err) => {});
 }
 
 const PaymentForm = ({ showSpinner }) => {
   const [{ isPending }] = usePayPalScriptReducer();
+  const [isPaying, setIsPaying] = React.useState(false);
 
   const [selectedMethod, setSelectedMethod] = React.useState("paypal");
 
@@ -43,9 +88,9 @@ const PaymentForm = ({ showSpinner }) => {
           textAlign: "center",
         }}>
         <form className='paypal-payment-form'>
-          <input type='hidden' name='payment-option' value={selectedMethod} />
+          {/* <input type='hidden' name='payment-option' value={selectedMethod} /> */}
 
-          <div
+          {/* <div
             onClick={() => setPaymentMethod("ideal")}
             className={`paymentMethod ${
               selectedMethod === "ideal" ? " active" : ""
@@ -71,22 +116,24 @@ const PaymentForm = ({ showSpinner }) => {
             ) : (
               ""
             )}
-          </div>
+          </div> */}
 
           <div className='paymentMethod '>
-            <PayPalCardFieldsProvider
+            {/* <PayPalCardFieldsProvider
               createOrder={createOrder}
               onApprove={onApprove}
               onError={(err) => {
                 console.log("err", err);
               }}>
               <PayPalCardFieldsForm />
-            </PayPalCardFieldsProvider>
+            </PayPalCardFieldsProvider> */}
+            <CardField />
           </div>
 
-          <button className='pay-btn' type='submit'>
+          {/* <button className='pay-btn' type='submit'>
             Pay
-          </button>
+          </button> */}
+          <SubmitPayment isPaying={isPaying} setIsPaying={setIsPaying} />
         </form>
       </div>
     </>
